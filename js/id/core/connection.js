@@ -1,15 +1,15 @@
 iD.Connection = function() {
 
     var event = d3.dispatch('authenticating', 'authenticated', 'auth', 'loading', 'load', 'loaded'),
-        url = 'http://www.openstreetmap.org',
+        url = 'http://www.openhistoricalmap.org',
         connection = {},
         inflight = {},
         loadedTiles = {},
         tileZoom = 16,
         oauth = osmAuth({
-            url: 'http://www.openstreetmap.org',
-            oauth_consumer_key: '5A043yRSEugj4DJ5TljuapfnrflWDte8jTOcWLlT',
-            oauth_secret: 'aB3jKq1TRsCOUrfOIZ6oQMEDmv2ptV76PA54NGLL',
+            url: 'http://www.openhistoricalmap.org',
+            oauth_consumer_key: 'KIKr52CV8tWxmYl5KpO5p5nVUVyhqSzhzToMjg78',
+            oauth_secret: '7c12jCPGc1MXia0YEiqkAcUV4OUXz1vPMjRH6GyA',
             loading: authenticating,
             done: authenticated
         }),
