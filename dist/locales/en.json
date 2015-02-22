@@ -385,17 +385,17 @@
     },
     "save": {
         "title": "Save",
-        "help": "Save changes to OpenStreetMap, making them visible to other users.",
+        "help": "Save changes to OpenHistoricalMap, making them visible to other users.",
         "no_changes": "No changes to save.",
         "error": "An error occurred while trying to save",
         "unknown_error_details": "Please ensure you are connected to the internet.",
-        "uploading": "Uploading changes to OpenStreetMap.",
+        "uploading": "Uploading changes to OpenHistoricalMap.",
         "unsaved_changes": "You have unsaved changes"
     },
     "success": {
-        "edited_osm": "Edited OSM!",
-        "just_edited": "You just edited OpenStreetMap!",
-        "view_on_osm": "View on OSM",
+        "edited_osm": "Edited OHM!",
+        "just_edited": "You just edited OpenHistoricalMap!",
+        "view_on_osm": "View on OHM",
         "facebook": "Share on Facebook",
         "twitter": "Share on Twitter",
         "google": "Share on Google+",
@@ -405,8 +405,8 @@
         "okay": "Okay"
     },
     "splash": {
-        "welcome": "Welcome to the iD OpenStreetMap editor",
-        "text": "iD is a friendly but powerful tool for contributing to the world's best free world map. This is version {version}. For more information see {website} and report bugs at {github}.",
+        "welcome": "Welcome to the OpenHistoricalMap iD editor",
+        "text": "iD is a friendly but powerful tool for contributing to OpenHistoricalMap. This is instance is based on iD version {version}. For more information see <a href='http://abbe98.github.io/iD/'>OpenHistoricalMap iD</a> and report bugs at <a href='https://github.com/Abbe98/iD/issues'>Github</a>.",
         "walkthrough": "Start the Walkthrough",
         "start": "Edit Now"
     },
