@@ -2972,7 +2972,7 @@ img.wiki-image {
     margin: auto;
 }
 
-/* Broken so display:none*/
+/* Broken so display:none */
 li.walkthrough {
     display: none;
 }
@@ -2983,4 +2983,13 @@ li.walkthrough {
 
 .col6.start {
     width: 100%;
+}
+
+/* Remove Mapillary */
+.filters .layer-list:first-child {
+    display: none;
+}
+
+.mapillary-image {
+    display: none;
 }
