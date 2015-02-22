@@ -2971,3 +2971,16 @@ img.wiki-image {
     background: rgba(0, 0, 0, 0) url(img/sprite.svg) no-repeat -400px -220px;
     margin: auto;
 }
+
+/* Broken so display:none*/
+li.walkthrough {
+    display: none;
+}
+
+.col6.walkthrough {
+    display: none;
+}
+
+.col6.start {
+    width: 100%;
+}
