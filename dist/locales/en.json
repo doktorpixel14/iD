@@ -216,7 +216,7 @@
         "nothing": "Nothing to redo."
     },
     "tooltip_keyhint": "Shortcut:",
-    "browser_notice": "This editor is supported in Firefox, Chrome, Safari, Opera, and Internet Explorer 9 and above. Please upgrade your browser or use Potlatch 2 to edit the map.",
+    "browser_notice": "This editor is supported in Firefox, Chrome, Safari, Opera, and Internet Explorer 9 and above.",
     "translate": {
         "translate": "Translate",
         "localized_translation_label": "Multilingual name",
@@ -225,7 +225,7 @@
     },
     "zoom_in_edit": "Zoom in to Edit",
     "logout": "logout",
-    "loading_auth": "Connecting to OpenStreetMap...",
+    "loading_auth": "Connecting to OpenHistoricalMap...",
     "report_a_bug": "report a bug",
     "feature_info": {
         "hidden_warning": "{count} hidden features",
@@ -240,8 +240,8 @@
         "title": "Save Changes",
         "description_placeholder": "Brief description of your contributions",
         "message_label": "Commit message",
-        "upload_explanation": "The changes you upload will be visible on all maps that use OpenStreetMap data.",
-        "upload_explanation_with_user": "The changes you upload as {user} will be visible on all maps that use OpenStreetMap data.",
+        "upload_explanation": "The changes you upload will be visible on all maps that use OpenHistoricalMap data.",
+        "upload_explanation_with_user": "The changes you upload as {user} will be visible on all maps that use OpenHistoricalMap data.",
         "save": "Save",
         "cancel": "Cancel",
         "changes": "{count} Changes",
