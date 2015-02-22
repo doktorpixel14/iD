@@ -1,6 +1,2 @@
-_site/
-iD.js
-iD.min.js
-*~
-*.swp
-*.swo
+node_modules
+npm-debug.log
