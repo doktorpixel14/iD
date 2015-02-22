@@ -2986,7 +2986,7 @@ li.walkthrough {
 }
 
 /* Remove Mapillary */
-.filters .layer-list:first-child {
+#bar > div.map-controls > div.map-control.map-data-control > div > .filters:nth-child(3) > ul:nth-child(1) {
     display: none;
 }
 
