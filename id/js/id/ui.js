@@ -112,7 +112,7 @@ iD.ui = function(context) {
             .append('a')
             .attr('target', '_blank')
             .attr('tabindex', -1)
-            .attr('href', 'https://github.com/Abbe98/iD/issues');
+            .attr('href', 'https://github.com/OpenHistoricalMap/iD/issues');
 
         bugReport.append('span')
             .attr('class','icon bug light');
