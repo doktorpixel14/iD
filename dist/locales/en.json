@@ -406,7 +406,7 @@
     },
     "splash": {
         "welcome": "Welcome to the OpenHistoricalMap iD editor",
-        "text": "iD is a friendly but powerful tool for contributing to OpenHistoricalMap. This is instance is based on iD version {version}. For more information see <a href='http://abbe98.github.io/iD/'>OpenHistoricalMap iD</a> and report bugs at <a href='https://github.com/Abbe98/iD/issues'>Github</a>.",
+        "text": "iD is a friendly but powerful tool for contributing to OpenHistoricalMap. This is instance is based on iD version {version}. For more information see <a href='http://openhistoricalmap.github.io/iD/'>OpenHistoricalMap iD</a> and report bugs at <a href='https://github.com/OpenHistoricalMap/iD/issues'>Github</a>.",
         "walkthrough": "Start the Walkthrough",
         "start": "Edit Now"
     },
