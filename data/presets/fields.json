@@ -229,7 +229,7 @@
     },
     "building_area": {
         "key": "building",
-        "type": "defaultcheck",
+        "type": "combo",
         "default": "yes",
         "geometry": "area",
         "label": "Building"
@@ -335,6 +335,11 @@
         "key": "description",
         "type": "textarea",
         "label": "Description"
+    },
+    "drive_through": {
+        "key": "drive_through",
+        "type": "check",
+        "label": "Drive-Through"
     },
     "electrified": {
         "key": "electrified",
