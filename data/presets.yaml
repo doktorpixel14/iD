@@ -177,6 +177,8 @@ en:
         label: Denotation
       description:
         label: Description
+      drive_through:
+        label: Drive-Through
       electrified:
         label: Electrification
         placeholder: "Contact Line, Electrified Rail..."
@@ -261,6 +263,11 @@ en:
         label: ICAO
       incline:
         label: Incline
+      incline_steps:
+        label: Incline
+        options:
+          up: Up
+          down: Down
       information:
         label: Type
       internet_access:
@@ -474,6 +481,13 @@ en:
           undefined: Assumed to be No
           "yes": "Yes"
           "no": "No"
+      service_rail:
+        label: Service Type
+        options:
+          spur: Spur
+          yard: Yard
+          siding: Siding
+          crossover: Crossover
       shelter:
         label: Shelter
       shelter_type:
@@ -1829,6 +1843,9 @@ en:
       relation:
         name: Relation
         terms: "<translate with synonyms or related terms for 'Relation', separated by commas>"
+      roundabout:
+        name: Roundabout
+        terms: "<translate with synonyms or related terms for 'Roundabout', separated by commas>"
       route/ferry:
         name: Ferry Route
         terms: "<translate with synonyms or related terms for 'Ferry Route', separated by commas>"
