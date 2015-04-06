@@ -1,5 +1,5 @@
 iD.Connection = function() {
-    var event = d3.dispatch('authenticating', 'authenticated', 'auth', 'loading' 'loaded'),
+    var event = d3.dispatch('authenticating', 'authenticated', 'auth', 'loading', 'loaded'),
         url = 'http://www.openhistoricalmap.org',
         connection = {},
         inflight = {},
