@@ -32,6 +32,11 @@ iD.ui = function(context) {
             .attr('id', 'map')
             .call(map);
 
+        content.append('div')
+            .attr('class', 'map-in-map')
+            .style('display', 'none')
+            .call(iD.ui.MapInMap(context));
+
         bar.append('div')
             .attr('class', 'spacer col4');
 
@@ -89,6 +94,10 @@ iD.ui = function(context) {
             .attr('class', 'fillD');
 
         footer.append('div')
+            .attr('class', 'api-status')
+            .call(iD.ui.Status(context));
+
+        footer.append('div')
             .attr('id', 'scale-block')
             .call(iD.ui.Scale(context));
 
@@ -131,10 +140,6 @@ iD.ui = function(context) {
             .attr('class', 'user-list')
             .attr('tabindex', -1)
             .call(iD.ui.Contributors(context));
-
-        footer.append('div')
-            .attr('class', 'api-status')
-            .call(iD.ui.Status(context));
 
         window.onbeforeunload = function() {
             return context.save();

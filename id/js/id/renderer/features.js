@@ -147,31 +147,26 @@ iD.Features = function(context) {
 
         var strings = Object.keys(entity.tags);
 
-        for (var i = 0, imax = strings.length; i !== imax; i++) {
+        for (var i = 0; i < strings.length; i++) {
             var s = strings[i];
             if (past_futures[s] || past_futures[entity.tags[s]]) { return true; }
         }
         return false;
     });
 
-    // lines or areas that don't match another feature filter.
+    // Lines or areas that don't match another feature filter.
+    // IMPORTANT: The 'others' feature must be the last one defined,
+    //   so that code in getMatches can skip this test if `hasMatch = true`
     defineFeature('others', function isOther(entity, resolver, geometry) {
-        return (geometry === 'line' || geometry === 'area') && !(
-            _features.major_roads.filter(entity, resolver, geometry) ||
-            _features.minor_roads.filter(entity, resolver, geometry) ||
-            _features.paths.filter(entity, resolver, geometry) ||
-            _features.buildings.filter(entity, resolver, geometry) ||
-            _features.landuse.filter(entity, resolver, geometry) ||
-            _features.boundaries.filter(entity, resolver, geometry) ||
-            _features.water.filter(entity, resolver, geometry) ||
-            _features.rail.filter(entity, resolver, geometry) ||
-            _features.power.filter(entity, resolver, geometry) ||
-            _features.past_future.filter(entity, resolver, geometry)
-        );
+        return (geometry === 'line' || geometry === 'area');
     });
 
 
     function features() {}
+
+    features.features = function() {
+        return _features;
+    };
 
     features.keys = function() {
         return _keys;
@@ -233,6 +228,8 @@ iD.Features = function(context) {
 
     features.gatherStats = function(d, resolver, dimensions) {
         var needsRedraw = false,
+            type = _.groupBy(d, function(ent) { return ent.type; }),
+            entities = [].concat(type.relation || [], type.way || [], type.node || []),
             currHidden, geometry, matches;
 
         _.each(_features, function(f) { f.count = 0; });
@@ -241,11 +238,11 @@ iD.Features = function(context) {
         // a _cullFactor of 1 corresponds to a 1000x1000px viewport..
         _cullFactor = dimensions[0] * dimensions[1] / 1000000;
 
-        for (var i = 0, imax = d.length; i !== imax; i++) {
-            geometry = d[i].geometry(resolver);
+        for (var i = 0; i < entities.length; i++) {
+            geometry = entities[i].geometry(resolver);
             if (!(geometry === 'vertex' || geometry === 'relation')) {
-                matches = Object.keys(features.getMatches(d[i], resolver, geometry));
-                for (var j = 0, jmax = matches.length; j !== jmax; j++) {
+                matches = Object.keys(features.getMatches(entities[i], resolver, geometry));
+                for (var j = 0; j < matches.length; j++) {
                     _features[matches[j]].count++;
                 }
             }
@@ -267,7 +264,7 @@ iD.Features = function(context) {
     };
 
     features.clear = function(d) {
-        for (var i = 0, imax = d.length; i !== imax; i++) {
+        for (var i = 0; i < d.length; i++) {
             features.clearEntity(d[i]);
         }
     };
@@ -291,10 +288,31 @@ iD.Features = function(context) {
                 hasMatch = false;
 
             if (!(geometry === 'vertex' || geometry === 'relation')) {
-                for (var i = 0, imax = _keys.length; i !== imax; i++) {
-                    if (hasMatch && _keys[i] === 'others') {
-                        continue;
+                for (var i = 0; i < _keys.length; i++) {
+
+                    if (_keys[i] === 'others') {
+                        if (hasMatch) continue;
+
+                        // If the entity is a way that has not matched any other
+                        // feature type, see if it has a parent relation, and if so,
+                        // match whatever feature types the parent has matched.
+                        // (The way is a member of a multipolygon.)
+                        //
+                        // IMPORTANT:
+                        // For this to work, getMatches must be called on relations before ways.
+                        //
+                        if (entity.type === 'way') {
+                            var parents = features.getParents(entity, resolver, geometry);
+                            if (parents.length === 1) {
+                                var pkey = iD.Entity.key(parents[0]);
+                                if (_cache[pkey] && _cache[pkey].matches) {
+                                    matches = _.clone(_cache[pkey].matches);
+                                    continue;
+                                }
+                            }
+                        }
                     }
+
                     if (_features[_keys[i]].filter(entity, resolver, geometry)) {
                         matches[_keys[i]] = hasMatch = true;
                     }
@@ -331,7 +349,7 @@ iD.Features = function(context) {
 
         var matches = features.getMatches(entity, resolver, geometry);
 
-        for (var i = 0, imax = _hidden.length; i !== imax; i++) {
+        for (var i = 0; i < _hidden.length; i++) {
             if (matches[_hidden[i]]) { return true; }
         }
         return false;
@@ -344,7 +362,7 @@ iD.Features = function(context) {
 
         if (!parents.length) { return false; }
 
-        for (var i = 0, imax = parents.length; i !== imax; i++) {
+        for (var i = 0; i < parents.length; i++) {
             if (!features.isHidden(parents[i], resolver, parents[i].geometry(resolver))) {
                 return false;
             }
@@ -390,7 +408,7 @@ iD.Features = function(context) {
             return d;
 
         var result = [];
-        for (var i = 0, imax = d.length; i !== imax; i++) {
+        for (var i = 0; i < d.length; i++) {
             var entity = d[i];
             if (!features.isHidden(entity, resolver, entity.geometry(resolver))) {
                 result.push(entity);

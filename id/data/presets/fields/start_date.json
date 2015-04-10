@@ -1,0 +1,6 @@
+{
+    "key": "start_date",
+    "type": "combo",
+    "universal": true,
+    "label": "Start Date"
+}

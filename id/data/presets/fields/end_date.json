@@ -1,0 +1,6 @@
+{
+    "key": "end_date",
+    "type": "combo",
+    "universal": true,
+    "label": "End Date"
+}
