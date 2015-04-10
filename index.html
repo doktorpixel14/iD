@@ -241,27 +241,7 @@
             iD.data.load(function() {
                 id = iD()
                     .presets(iD.data.presets)
-                    .imagery(
-                        [{
-                            "name": "MapQuest Open Aerial",
-                            "type": "tms",
-                            "template": "http://oatile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/{zoom}/{x}/{y}.png",
-                            "default": true
-                        },
-                        {
-                            "name": "OpenHistoricalMap",
-                            "type": "tms",
-                            "description": "The default OpenHistoricalMap layer.",
-                            "template": "http://www.openhistoricalmap.org/ohm_tiles/{zoom}/{x}/{y}.png",
-                            "scaleExtent": [
-                                0,
-                                18
-                            ],
-                            "terms_url": "http://openhistoricalmap.org/",
-                            "terms_text": "© OpenHistoricalMap contributors",
-                            "id": "MAPNIK",
-                            "default": true
-                        }])
+                    .imagery(iD.data.imagery)
                     .taginfo(iD.taginfo())
                     .assetPath('dist/');
 
