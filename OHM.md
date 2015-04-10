@@ -4,31 +4,7 @@ This document describes the changes made to this instance of iD. *This document 
 
 ## Imagery
 
-On `id.data.load()`->`.imagery()` should be set to our preferred imagery formated as JSON(for schema see [OSMLab](https://github.com/osmlab/editor-imagery-index/blob/gh-pages/schema.json)).
-
-Current imagery:
-
-```
-[{
-    "name": "MapQuest Open Aerial",
-    "type": "tms",
-    "template": "http://oatile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/{zoom}/{x}/{y}.png",
-    "default": true
-},
-{
-    "name": "OpenHistoricalMap",
-    "type": "tms",
-    "description": "The default OpenHistoricalMap layer.",
-    "template": "http://www.openhistoricalmap.org/ohm_tiles/{zoom}/{x}/{y}.png",
-    "scaleExtent": [
-        0,
-        19
-    ],
-    "terms_url": "http://openhistoricalmap.org/",
-    "terms_text": "© OpenHistoricalMap contributors",
-    "id": "MAPNIK",
-    "default": true
-}]
+On `id.data.load()`->`.imagery()` should be set to our preferred imagery formated as JSON(for schema see [OSMLab](https://github.com/osmlab/editor-imagery-index/blob/gh-pages/schema.json)). This is done by replacing the iDs default imagery in `data/imagery.json`.
 ```
 
 ## Remove iD.ui.SourceSwitch()
@@ -83,3 +59,9 @@ li.walkthrough {
 ## Rebranding/Help
 
 This is done in `data/core.yaml` and `dist/locales/en.json`, all links and OpenStreetMap text should be replaced.
+
+For adding/removing help sections you will need to edit `js/id/ui/help.js`.
+
+## Presents/Fields
+
+Each new present/field requires a new file, for more information on what files that has to be edited see [commit/c817ea79608205ac2e831c36e0baa29efaa89847](https://github.com/Abbe98/iD/commit/c817ea79608205ac2e831c36e0baa29efaa89847).
