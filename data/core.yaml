@@ -313,10 +313,33 @@ en:
     title: Save
     help: "Save changes to OpenStreetMap, making them visible to other users."
     no_changes: No changes to save.
-    error: An error occurred while trying to save
+    error: Errors occurred while trying to save
+    status_code: "Server returned status code {code}"
     unknown_error_details: "Please ensure you are connected to the internet."
     uploading: Uploading changes to OpenStreetMap.
     unsaved_changes: You have unsaved changes
+    conflict:
+      header: Resolve conflicting edits
+      count: 'Conflict {num} of {total}'
+      previous: '< Previous'
+      next: 'Next >'
+      keep_local: Keep mine
+      keep_remote: Use theirs
+      restore: Restore
+      delete: Leave Deleted
+      download_changes: Or download your changes.
+      done: "All conflicts resolved!"
+      help: |
+        Another user changed some of the same map features you changed.
+        Click on each item below for more details about the conflict, and choose whether to keep
+        your changes or the other user's changes.
+  merge_remote_changes:
+    conflict:
+      deleted: 'This object has been deleted by {user}.'
+      location: 'This object was moved by both you and {user}.'
+      nodelist: 'Nodes were changed by both you and {user}.'
+      memberlist: 'Relation members were changed by both you and {user}.'
+      tags: 'You changed the <b>{tag}</b> tag to "{local}" and {user} changed it to "{remote}".'
   success:
     edited_osm: "Edited OSM!"
     just_edited: "You just edited OpenStreetMap!"
@@ -329,6 +352,7 @@ en:
       (<a href='https://help.openstreetmap.org/questions/4705/why-havent-my-changes-appeared-on-the-map' target='_blank'>details</a>).
   confirm:
     okay: "Okay"
+    cancel: "Cancel"
   splash:
     welcome: Welcome to the iD OpenStreetMap editor
     text: "iD is a friendly but powerful tool for contributing to the world's best free world map. This is version {version}. For more information see {website} and report bugs at {github}."
@@ -370,17 +394,18 @@ en:
     help: |
       # Help
 
-      This is an editor for [OpenStreetMap](http://www.openstreetmap.org/), the
-      free and editable map of the world. You can use it to add and update
-      data in your area, making an open-source and open-data map of the world
-      better for everyone.
+      This is an editor for [OpenHistoricalMap](http://www.openhistoricalmap.org/),
+      a collaborative project for those who wants to map the past. You can use it to
+      add and update data in your area, or somewhere else in the world.
 
       Edits that you make on this map will be visible to everyone who uses
-      OpenStreetMap. In order to make an edit, you'll need a
-      [free OpenStreetMap account](https://www.openstreetmap.org/user/new).
+      OpenHistoricalMap. In order to make an edit, you'll need to [log in](http://www.openhistoricalmap.org/login).
 
-      The [iD editor](http://ideditor.com/) is a collaborative project with [source
-      code available on GitHub](https://github.com/openstreetmap/iD).
+      The [iD editor](http://ideditor.com/) is a collaborative project with
+      [source code available on GitHub](https://github.com/openstreetmap/iD).
+      This particular instance of the iD editor is specifically developed for
+      the OpenHistoricalMap project.
+
     editing_saving: |
       # Editing & Saving
 
@@ -411,118 +436,33 @@ en:
 
       If everything looks good, you can enter a short comment explaining the change
       you made, and click 'Save' again to post the changes
-      to [OpenStreetMap.org](http://www.openstreetmap.org/), where they are visible
+      to [OpenHistoricalMap.org](http://www.openhistoricalmap.org/), where they are visible
       to all other users and available for others to build and improve upon.
 
       If you can't finish your edits in one sitting, you can leave the editor
       window and come back (on the same browser and computer), and the
       editor application will offer to restore your work.
-    roads: |
-      # Roads
-
-      You can create, fix, and delete roads with this editor. Roads can be all
-      kinds: paths, highways, trails, cycleways, and more - any often-crossed
-      segment should be mappable.
-
-      ### Selecting
-
-      Click on a road to select it. An outline should become visible, along
-      with a small tools menu on the map and a sidebar showing more information
-      about the road.
-
-      ### Modifying
-
-      Often you'll see roads that aren't aligned to the imagery behind them
-      or to a GPS track. You can adjust these roads so they are in the correct
-      place.
-
-      First click on the road you want to change. This will highlight it and show
-      control points along it that you can drag to better locations. If
-      you want to add new control points for more detail, double-click a part
-      of the road without a node, and one will be added.
-
-      If the road connects to another road, but doesn't properly connect on
-      the map, you can drag one of its control points onto the other road in
-      order to join them. Having roads connect is important for the map
-      and essential for providing driving directions.
-
-      You can also click the 'Move' tool or press the `M` shortcut key to move the entire road at
-      one time, and then click again to save that movement.
-
-      ### Deleting
-
-      If a road is entirely incorrect - you can see that it doesn't exist in satellite
-      imagery and ideally have confirmed locally that it's not present - you can delete
-      it, which removes it from the map. Be cautious when deleting features -
-      like any other edit, the results are seen by everyone and satellite imagery
-      is often out of date, so the road could simply be newly built.
-
-      You can delete a road by clicking on it to select it, then clicking the
-      trash can icon or pressing the 'Delete' key.
-
-      ### Creating
-
-      Found somewhere there should be a road but there isn't? Click the 'Line'
-      icon in the top-left of the editor or press the shortcut key `2` to start drawing
-      a line.
-
-      Click on the start of the road on the map to start drawing. If the road
-      branches off from an existing road, start by clicking on the place where they connect.
-
-      Then click on points along the road so that it follows the right path, according
-      to satellite imagery or GPS. If the road you are drawing crosses another road, connect
-      it by clicking on the intersection point. When you're done drawing, double-click
-      or press 'Return' or 'Enter' on your keyboard.
-    gps: |
-      # GPS
-
-      GPS data is the most trusted source of data for OpenStreetMap. This editor
-      supports local traces - `.gpx` files on your local computer. You can collect
-      this kind of GPS trace with a number of smartphone applications as well as
-      personal GPS hardware.
-
-      For information on how to perform a GPS survey, read
-      [Surveying with a GPS](http://learnosm.org/en/beginner/using-gps/).
-
-      To use a GPX track for mapping, drag and drop the GPX file onto the map
-      editor. If it's recognized, it will be added to the map as a bright purple
-      line. Click on the 'Map Data' menu on the right side to enable,
-      disable, or zoom to this new GPX-powered layer.
-
-      The GPX track isn't directly uploaded to OpenStreetMap - the best way to
-      use it is to draw on the map, using it as a guide for the new features that
-      you add, and also to [upload it to OpenStreetMap](http://www.openstreetmap.org/trace/create)
-      for other users to use.
     imagery: |
       # Imagery
 
-      Aerial imagery is an important resource for mapping. A combination of
-      airplane flyovers, satellite views, and freely-compiled sources are available
-      in the editor under the 'Background Settings' menu on the right.
-
-      By default a [Bing Maps](http://www.bing.com/maps/) satellite layer is
-      presented in the editor, but as you pan and zoom the map to new geographical
-      areas, new sources will become available. Some countries, like the United
-      States, France, and Denmark have very high-quality imagery available for some areas.
+      Imagery is an important resource for mapping. A combination of
+      historical maps, and statellite imagery are available in the editor
+      under the 'Background Settings' menu on the right. The options in under
+      backgrounds settings might differ from location to loaction.
 
       Imagery is sometimes offset from the map data because of a mistake on the
       imagery provider's side. If you see a lot of roads shifted from the background,
       don't immediately move them all to match the background. Instead you can adjust
       the imagery so that it matches the existing data by clicking 'Fix alignment' at
       the bottom of the Background Settings UI.
-    addresses: |
-      # Addresses
 
-      Addresses are some of the most useful information for the map.
+      ###Using Custom Imagery
 
-      Although addresses are often represented as parts of streets, in OpenStreetMap
-      they're recorded as attributes of buildings and places along streets.
-
-      You can add address information to places mapped as building outlines
-      as well as those mapped as single points. The optimal source of address
-      data is from an on-the-ground survey or personal knowledge - as with any
-      other feature, copying from commercial sources like Google Maps is strictly
-      forbidden.
+      You can use your own maps or out-of-copyrigth maps as backgrounds by choosing
+      'custom' under 'Background Settings'. This requries that you have a tile URL(web address)
+      to your map. [Map Wraper](http://mapwarper.net/) is a tool that allows you to get such a URL.
+      Note that other existing maps at Map Warper migth not be aviable under the public domain or
+      a public domain like license. For more information on copyright see 'Copyright/Sources'.
     inspector: |
       # Using the Inspector
 
@@ -532,7 +472,7 @@ en:
       ### Selecting a Feature Type
 
       After you add a point, line, or area, you can choose what type of feature it
-      is, like whether it's a highway or residential road, supermarket or cafe.
+      is, like whether it's a highway or residential road, ruin or town.
       The inspector will display buttons for common feature types, and you can
       find others by typing what you're looking for in the search box.
 
@@ -546,8 +486,7 @@ en:
       the feature like its name and address.
 
       Below the fields you see, you can click icons to add other details,
-      like [Wikipedia](http://www.wikipedia.org/) information, wheelchair
-      access, and more.
+      like [Wikipedia](http://www.wikipedia.org/) information, notes, and more.
 
       At the bottom of the inspector, click 'Additional tags' to add arbitrary
       other tags to the element. [Taginfo](http://taginfo.openstreetmap.org/) is a
@@ -555,85 +494,31 @@ en:
 
       Changes you make in the inspector are automatically applied to the map.
       You can undo them at any time by clicking the 'Undo' button.
-    buildings: |
-      # Buildings
 
-      OpenStreetMap is the world's largest database of buildings. You can create
-      and improve this database.
+    copyrigth_sources: |
+      # Copyright/Sources
 
-      ### Selecting
+      When adding data to OpenHistoricalMap make sure that you are allowed
+      to use your source. Your source can't require attribution and should be
+      in the public domain or using a public domain like license, such as
+      [Creative Commons: CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
 
-      You can select a building by clicking on its border. This will highlight the
-      building and open a small tools menu and a sidebar showing more information
-      about the building.
+      ###Out of Copyright
 
-      ### Modifying
+      The copyright expiry date varies for different countries and map producers.
+      The OpenStreetMap Wiki provides a great summary with more information on
+      the subject: [Out of Copyright Maps](https://wiki.openstreetmap.org/wiki/Out-of-copyright_maps)
 
-      Sometimes buildings are incorrectly placed or have incorrect tags.
+      ###Free and Open Sources
 
-      To move an entire building, select it, then click the 'Move' tool. Move your
-      mouse to shift the building, and click when it's correctly placed.
+      [The New York Public](http://maps.nypl.org/warper/) Library has a great collection of maps licensed under a
+      public domain like license. You can add one of these maps as a background directly
+      in this editor, using the tiles link available under each maps export tab.
+      For more about custom backgrounds see 'Imagery'.
 
-      To fix the specific shape of a building, click and drag the nodes that form
-      its border into better places.
-
-      ### Creating
-
-      One of the main questions around adding buildings to the map is that
-      OpenStreetMap records buildings both as shapes and points. The rule of thumb
-      is to _map a building as a shape whenever possible_, and map companies, homes,
-      amenities, and other things that operate out of buildings as points placed
-      within the building shape.
-
-      Start drawing a building as a shape by clicking the 'Area' button in the top
-      left of the interface, and end it either by pressing 'Return' on your keyboard
-      or clicking on the first node drawn to close the shape.
-
-      ### Deleting
-
-      If a building is entirely incorrect - you can see that it doesn't exist in satellite
-      imagery and ideally have confirmed locally that it's not present - you can delete
-      it, which removes it from the map. Be cautious when deleting features -
-      like any other edit, the results are seen by everyone and satellite imagery
-      is often out of date, so the building could simply be newly built.
-
-      You can delete a building by clicking on it to select it, then clicking the
-      trash can icon or pressing the 'Delete' key.
-    relations: |
-      # Relations
-
-      A relation is a special type of feature in OpenStreetMap that groups together
-      other features. For example, two common types of relations are *route relations*,
-      which group together sections of road that belong to a specific freeway or
-      highway, and *multipolygons*, which group together several lines that define
-      a complex area (one with several pieces or holes in it like a donut).
-
-      The group of features in a relation are called *members*. In the sidebar, you can
-      see which relations a feature is a member of, and click on a relation there
-      to select the it. When the relation is selected, you can see all of its
-      members listed in the sidebar and highlighted on the map.
-
-      For the most part, iD will take care of maintaining relations automatically
-      while you edit. The main thing you should be aware of is that if you delete a
-      section of road to redraw it more accurately, you should make sure that the
-      new section is a member of the same relations as the original.
-
-      ## Editing Relations
-
-      If you want to edit relations, here are the basics.
-
-      To add a feature to a relation, select the feature, click the "+" button in the
-      "All relations" section of the sidebar, and select or type the name of the relation.
-
-      To create a new relation, select the first feature that should be a member,
-      click the "+" button in the "All relations" section, and select "New relation...".
-
-      To remove a feature from a relation, select the feature and click the trash
-      button next to the relation you want to remove it from.
-
-      You can create multipolygons with holes using the "Merge" tool. Draw two areas (inner
-      and outer), hold the Shift key and click on each of them to select them both, and then
-      click the "Merge" (+) button.
+      Another great resource for old public domain maps is Europeana, Europeana allows you
+      to search for maps and filter away results that is not licensed under the public domain.
+      [Example search: Public domain maps London](http://www.europeana.eu/portal/search.html?query=what%3Amaps+london&rows=24&qf=RIGHTS%3Ahttp%3A%2F%2Fcreativecommons.org%2Fpublicdomain%2Fmark%2F1.0%2F*&qt=false)
   intro:
     navigation:
       title: "Navigation"

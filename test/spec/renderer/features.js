@@ -136,6 +136,17 @@ describe('iD.Features', function() {
             iD.Way({id: 'industrial', tags: {area: 'yes', landuse: 'industrial'}, version: 1}),
             iD.Way({id: 'parkinglot', tags: {area: 'yes', amenity: 'parking', parking: 'surface'}, version: 1}),
 
+            // Landuse with hole
+            iD.Way({id: 'inner', version: 1}),
+            iD.Way({id: 'outer', version: 1}),
+            iD.Relation({id: 'retail', tags: {landuse: 'retail', type: 'multipolygon'},
+                    members: [
+                        {id: 'outer', role: 'outer', type: 'way'},
+                        {id: 'inner', role: 'inner', type: 'way'}
+                    ],
+                    version: 1
+                }),
+
             // Boundaries
             iD.Way({id: 'boundary', tags: {boundary: 'administrative'}, version: 1}),
 
@@ -166,7 +177,17 @@ describe('iD.Features', function() {
 
             // Others
             iD.Way({id: 'fence', tags: {barrier: 'fence'}, version: 1}),
-            iD.Way({id: 'pipeline', tags: {man_made: 'pipeline'}, version: 1})
+            iD.Way({id: 'pipeline', tags: {man_made: 'pipeline'}, version: 1}),
+
+            // Site relation
+            iD.Relation({id: 'site', tags: {type: 'site'},
+                    members: [
+                        {id: 'fence', role: 'perimeter'},
+                        {id: 'building_yes'}
+                    ],
+                    version: 1
+                }),
+
         ]),
         all = _.values(graph.base().entities);
 
@@ -279,7 +300,7 @@ describe('iD.Features', function() {
 
             doMatch([
                 'forest', 'scrub', 'industrial', 'parkinglot', 'building_no',
-                'rail_landuse', 'landuse_construction'
+                'rail_landuse', 'landuse_construction', 'retail', 'inner', 'outer'
             ]);
 
             dontMatch([
@@ -385,7 +406,7 @@ describe('iD.Features', function() {
             dontMatch([
                 'point_bar', 'motorway', 'service', 'path', 'building_yes',
                 'forest', 'boundary', 'water', 'railway', 'power_line',
-                'motorway_construction',
+                'motorway_construction', 'retail', 'inner', 'outer'
             ]);
         });
     });

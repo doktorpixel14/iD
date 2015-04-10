@@ -30,7 +30,9 @@ iD.Map = function(context) {
         context.features()
             .on('redraw.map', redraw);
 
-        selection.call(zoom);
+        selection
+            .on('dblclick.map', dblClick)
+            .call(zoom);
 
         supersurface = selection.append('div')
             .attr('id', 'supersurface');
@@ -143,20 +145,23 @@ iD.Map = function(context) {
         dispatch.drawn({full: true});
     }
 
-    function zoomPan() {
-        if (d3.event && d3.event.sourceEvent.type === 'dblclick') {
-            if (!dblclickEnabled) {
-                zoom.scale(projection.scale() * 2 * Math.PI)
-                    .translate(projection.translate());
-                return d3.event.sourceEvent.preventDefault();
-            }
+    function dblClick() {
+        if (!dblclickEnabled) {
+            d3.event.preventDefault();
+            d3.event.stopImmediatePropagation();
         }
+    }
 
-        if (Math.log(d3.event.scale / Math.LN2 - 8) < minzoom + 1) {
+    function zoomPan() {
+        if (Math.log(d3.event.scale) / Math.LN2 - 8 < minzoom) {
+            surface.interrupt();
             iD.ui.flash(context.container())
                 .select('.content')
                 .text(t('cannot_zoom'));
-            return setZoom(context.minEditableZoom(), true);
+            setZoom(context.minEditableZoom(), true);
+            queueRedraw();
+            dispatch.move(map);
+            return;
         }
 
         projection
@@ -205,7 +210,7 @@ iD.Map = function(context) {
         }
 
         if (map.editable()) {
-            context.connection().loadTiles(projection, dimensions);
+            context.loadTiles(projection, dimensions);
             drawVector(difference, extent);
         } else {
             editOff();
@@ -251,6 +256,22 @@ iD.Map = function(context) {
         dblclickEnabled = _;
         return map;
     };
+
+    function interpolateZoom(_) {
+        var k = projection.scale(),
+            t = projection.translate();
+
+        surface.node().__chart__ = {
+            x: t[0],
+            y: t[1],
+            k: k * 2 * Math.PI
+        };
+
+        setZoom(_);
+        projection.scale(k).translate(t);  // undo setZoom projection changes
+
+        zoom.event(surface.transition());
+    }
 
     function setZoom(_, force) {
         if (_ === map.zoom() && !force)
@@ -306,8 +327,8 @@ iD.Map = function(context) {
         return redraw();
     };
 
-    map.zoomIn = function() { return map.zoom(~~map.zoom() + 1); };
-    map.zoomOut = function() { return map.zoom(~~map.zoom() - 1); };
+    map.zoomIn = function() { interpolateZoom(~~map.zoom() + 1); };
+    map.zoomOut = function() { interpolateZoom(~~map.zoom() - 1); };
 
     map.center = function(loc) {
         if (!arguments.length) {
@@ -327,6 +348,7 @@ iD.Map = function(context) {
         }
 
         if (z < minzoom) {
+            surface.interrupt();
             iD.ui.flash(context.container())
                 .select('.content')
                 .text(t('cannot_zoom'));
@@ -341,8 +363,10 @@ iD.Map = function(context) {
     };
 
     map.zoomTo = function(entity, zoomLimits) {
-        var extent = entity.extent(context.graph()),
-            zoom = map.extentZoom(extent);
+        var extent = entity.extent(context.graph());
+        if (!isFinite(extent.area())) return;
+
+        var zoom = map.trimmedExtentZoom(extent);
         zoomLimits = zoomLimits || [context.minEditableZoom(), 20];
         map.centerZoom(extent.center(), Math.min(Math.max(zoom, zoomLimits[0]), zoomLimits[1]));
     };
@@ -391,19 +415,28 @@ iD.Map = function(context) {
                 projection.invert([dimensions[0] - pad, headerY + pad]));
     };
 
-    map.extentZoom = function(_) {
-        var extent = iD.geo.Extent(_),
-            tl = projection([extent[0][0], extent[1][1]]),
+    function calcZoom(extent, dim) {
+        var tl = projection([extent[0][0], extent[1][1]]),
             br = projection([extent[1][0], extent[0][1]]);
 
         // Calculate maximum zoom that fits extent
-        var hFactor = (br[0] - tl[0]) / dimensions[0],
-            vFactor = (br[1] - tl[1]) / dimensions[1],
+        var hFactor = (br[0] - tl[0]) / dim[0],
+            vFactor = (br[1] - tl[1]) / dim[1],
             hZoomDiff = Math.log(Math.abs(hFactor)) / Math.LN2,
             vZoomDiff = Math.log(Math.abs(vFactor)) / Math.LN2,
             newZoom = map.zoom() - Math.max(hZoomDiff, vZoomDiff);
 
         return newZoom;
+    }
+
+    map.extentZoom = function(_) {
+        return calcZoom(iD.geo.Extent(_), dimensions);
+    };
+
+    map.trimmedExtentZoom = function(_) {
+        var trimY = 120, trimX = 40,
+            trimmed = [dimensions[0] - trimX, dimensions[1] - trimY];
+        return calcZoom(iD.geo.Extent(_), trimmed);
     };
 
     map.editable = function() {

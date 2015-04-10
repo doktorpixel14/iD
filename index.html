@@ -30,6 +30,7 @@
         <script src='js/lib/d3.value.js'></script>
         <script src='js/lib/d3-compat.js'></script>
         <script src='js/lib/bootstrap-tooltip.js'></script>
+        <script src='js/lib/diff3.js'></script>
         <script src='js/lib/rbush.js'></script>
         <script src='js/lib/sexagesimal.js'></script>
         <script src='js/lib/togeojson.js'></script>
@@ -81,12 +82,14 @@
         <script src='js/id/ui/modal.js'></script>
         <script src='js/id/ui/cmd.js'></script>
         <script src='js/id/ui/confirm.js'></script>
+        <script src='js/id/ui/conflicts.js'></script>
         <script src='js/id/ui/commit.js'></script>
         <script src='js/id/ui/success.js'></script>
         <script src='js/id/ui/loading.js'></script>
         <script src='js/id/ui/account.js'></script>
         <script src='js/id/ui/background.js'></script>
         <script src='js/id/ui/map_data.js'></script>
+        <script src='js/id/ui/map_in_map.js'></script>
         <script src='js/id/ui/modes.js'></script>
         <script src='js/id/ui/contributors.js'></script>
         <script src='js/id/ui/help.js'></script>
@@ -158,6 +161,7 @@
         <script src='js/id/actions/join.js'></script>
         <script src='js/id/actions/merge.js'></script>
         <script src='js/id/actions/merge_polygon.js'></script>
+        <script src='js/id/actions/merge_remote_changes.js'></script>
         <script src='js/id/actions/move_node.js'></script>
         <script src='js/id/actions/move.js'></script>
         <script src='js/id/actions/noop.js'></script>
@@ -237,27 +241,7 @@
             iD.data.load(function() {
                 id = iD()
                     .presets(iD.data.presets)
-                    .imagery(
-                        [{
-                            "name": "MapQuest Open Aerial",
-                            "type": "tms",
-                            "template": "http://oatile{switch:1,2,3,4}.mqcdn.com/tiles/1.0.0/sat/{zoom}/{x}/{y}.png",
-                            "default": true
-                        },
-                        {
-                            "name": "OpenHistoricalMap",
-                            "type": "tms",
-                            "description": "The default OpenHistoricalMap layer.",
-                            "template": "http://www.openhistoricalmap.org/ohm_tiles/{zoom}/{x}/{y}.png",
-                            "scaleExtent": [
-                                0,
-                                18
-                            ],
-                            "terms_url": "http://openhistoricalmap.org/",
-                            "terms_text": "© OpenHistoricalMap contributors",
-                            "id": "MAPNIK",
-                            "default": true
-                        }])
+                    .imagery(iD.data.imagery)
                     .taginfo(iD.taginfo())
                     .assetPath('dist/');
 

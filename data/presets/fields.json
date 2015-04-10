@@ -229,7 +229,7 @@
     },
     "building_area": {
         "key": "building",
-        "type": "defaultcheck",
+        "type": "combo",
         "default": "yes",
         "geometry": "area",
         "label": "Building"
@@ -336,6 +336,11 @@
         "type": "textarea",
         "label": "Description"
     },
+    "drive_through": {
+        "key": "drive_through",
+        "type": "check",
+        "label": "Drive-Through"
+    },
     "electrified": {
         "key": "electrified",
         "type": "combo",
@@ -354,13 +359,18 @@
         "key": "ele",
         "type": "number",
         "icon": "elevation",
-        "universal": true,
         "label": "Elevation"
     },
     "emergency": {
         "key": "emergency",
         "type": "check",
         "label": "Emergency"
+    },
+    "end_date": {
+        "key": "end_date",
+        "type": "combo",
+        "universal": true,
+        "label": "End Date"
     },
     "entrance": {
         "key": "entrance",
@@ -530,6 +540,17 @@
         "key": "incline",
         "type": "combo",
         "label": "Incline"
+    },
+    "incline_steps": {
+        "key": "incline",
+        "type": "combo",
+        "label": "Incline",
+        "strings": {
+            "options": {
+                "up": "Up",
+                "down": "Down"
+            }
+        }
     },
     "information": {
         "key": "information",
@@ -776,7 +797,6 @@
         "key": "phone",
         "type": "tel",
         "icon": "telephone",
-        "universal": true,
         "label": "Phone",
         "placeholder": "+31 42 123 4567"
     },
@@ -966,6 +986,19 @@
             }
         }
     },
+    "service_rail": {
+        "key": "service",
+        "type": "combo",
+        "label": "Service Type",
+        "strings": {
+            "options": {
+                "spur": "Spur",
+                "yard": "Yard",
+                "siding": "Siding",
+                "crossover": "Crossover"
+            }
+        }
+    },
     "shelter": {
         "key": "shelter",
         "type": "check",
@@ -1079,6 +1112,12 @@
             "motocross",
             "running"
         ]
+    },
+    "start_date": {
+        "key": "start_date",
+        "type": "combo",
+        "universal": true,
+        "label": "Start Date"
     },
     "structure": {
         "type": "radio",
@@ -1244,7 +1283,6 @@
             "no"
         ],
         "icon": "wheelchair",
-        "universal": true,
         "label": "Wheelchair Access"
     },
     "width": {
