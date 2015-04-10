@@ -359,13 +359,18 @@
         "key": "ele",
         "type": "number",
         "icon": "elevation",
-        "universal": true,
         "label": "Elevation"
     },
     "emergency": {
         "key": "emergency",
         "type": "check",
         "label": "Emergency"
+    },
+    "end_date": {
+        "key": "end_date",
+        "type": "combo",
+        "universal": true,
+        "label": "End Date"
     },
     "entrance": {
         "key": "entrance",
@@ -792,7 +797,6 @@
         "key": "phone",
         "type": "tel",
         "icon": "telephone",
-        "universal": true,
         "label": "Phone",
         "placeholder": "+31 42 123 4567"
     },
@@ -1109,6 +1113,12 @@
             "running"
         ]
     },
+    "start_date": {
+        "key": "start_date",
+        "type": "combo",
+        "universal": true,
+        "label": "Start Date"
+    },
     "structure": {
         "type": "radio",
         "keys": [
@@ -1273,7 +1283,6 @@
             "no"
         ],
         "icon": "wheelchair",
-        "universal": true,
         "label": "Wheelchair Access"
     },
     "width": {

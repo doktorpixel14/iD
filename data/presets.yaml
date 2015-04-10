@@ -191,6 +191,8 @@ en:
         label: Elevation
       emergency:
         label: Emergency
+      end_date:
+        label: End Date
       entrance:
         label: Type
       except:
@@ -529,6 +531,8 @@ en:
         label: Sport
       sport_racing:
         label: Sport
+      start_date:
+        label: Start Date
       structure:
         label: Structure
         placeholder: Unknown
