@@ -27,8 +27,7 @@ To verify a bug fix (or test a new feature), use the [test instance](http://open
 ## Contributing Documentation
 
 Documentation is maintained as a series of [Markdown](https://guides.github.com/features/mastering-markdown/) documents in [core.yaml](/data/core.yaml). The documentation 
-is in the `help` section. The first line 
-of each new section of documentation should be of the form
+is in the `help` section. The first line of each new section of documentation should be of the form
 
     # GPS
 
@@ -38,6 +37,13 @@ so on in order to keep it in a certain order.
 
 To add a new piece of documentation, simply add to [core.yaml](/data/core.yaml) in the same format as the rest.
 
+## Adding or Refining Presets
+
+Presets save time for iD users by automatically showing them the tags they are
+likely to add for a given feature. They are stored in `data/presets/presets`. If
+you're going to update the presets, [review the Presets README](/data/presets/README.md).
+
+>>>>>>> master-dump2
 ## Javascript
 
 We use the [Airbnb style for Javascript](https://github.com/airbnb/javascript) with
@@ -48,7 +54,7 @@ only one difference:
 No aligned `=`, no aligned arguments, spaces are either indents or the 1
 space between expressions. No hard tabs, ever.
 
-Javascript code should pass through [JSHint](http://www.jshint.com/) with no
+Javascript code should pass through [ESLint](http://eslint.org/) with no
 warnings.
 
 ## HTML
@@ -81,10 +87,9 @@ Test your code and make sure it passes. Our testing harness requires [node.js](h
 and a few modules:
 
 1. [Install node.js](http://nodejs.org/) version 0.10.0 or later - 'Install' will download a package for your OS
-2. Install [PhantomJS](http://phantomjs.org/) version 1.9.1 or later - This can be done via `npm install phantomjs` or homebrew
-3. Go to the directory where you have checked out `iD`
-4. Run `npm install`
-5. Run `npm test` to see whether your tests pass or fail.
+2. Go to the directory where you have checked out `iD`
+3. Run `npm install`
+4. Run `npm test` to see whether your tests pass or fail.
 
 ## Building / Installing
 
@@ -115,7 +120,7 @@ them.
 
 So let's say you've changed `js/ui/confirm.js`.
 
-1. Run `jshint js/id` to make sure your code is clean
+1. Run `eslint js/id` to make sure your code is clean
 2. Run tests with `npm test`
 3. Commit your changes with an informative commit message
 4. [Submit a pull request](https://help.github.com/articles/using-pull-requests) to the `openstreetmap/iD` project.

@@ -7,7 +7,7 @@ window.iD = function () {
 
     // https://github.com/openstreetmap/iD/issues/772
     // http://mathiasbynens.be/notes/localstorage-pattern#comment-9
-    try { storage = localStorage; } catch (e) {}
+    try { storage = localStorage; } catch (e) {}  // eslint-disable-line no-empty
     storage = storage || (function() {
         var s = {};
         return {
@@ -24,9 +24,9 @@ window.iD = function () {
             else storage.setItem(k, v);
         } catch(e) {
             // localstorage quota exceeded
-            /* jshint devel:true */
+            /* eslint-disable no-console */
             if (typeof console !== 'undefined') console.error('localStorage quota exceeded');
-            /* jshint devel:false */
+            /* eslint-enable no-console */
         }
     };
 
@@ -58,9 +58,15 @@ window.iD = function () {
         return context;
     };
 
-    context.locale = function(_, path) {
-        locale = _;
+    context.locale = function(loc, path) {
+        locale = loc;
         localePath = path;
+
+        // Also set iD.detect().locale (unless we detected 'en-us' and openstreetmap wants 'en')..
+        if (!(loc.toLowerCase() === 'en' && iD.detect().locale.toLowerCase() === 'en-us')) {
+            iD.detect().locale = loc;
+        }
+
         return context;
     };
 
@@ -258,6 +264,8 @@ window.iD = function () {
     context.pan = map.pan;
     context.zoomIn = map.zoomIn;
     context.zoomOut = map.zoomOut;
+    context.zoomInFurther = map.zoomInFurther;
+    context.zoomOutFurther = map.zoomOutFurther;
 
     context.surfaceRect = function() {
         // Work around a bug in Firefox.
@@ -325,7 +333,7 @@ window.iD = function () {
     return d3.rebind(context, dispatch, 'on');
 };
 
-iD.version = '1.7.0';
+iD.version = '1.7.4';
 
 (function() {
     var detected = {};
@@ -372,7 +380,7 @@ iD.version = '1.7.0';
     // Added due to incomplete svg style support. See #715
     detected.opera = (detected.browser.toLowerCase() === 'opera' && parseFloat(detected.version) < 15 );
 
-    detected.locale = navigator.language || navigator.userLanguage;
+    detected.locale = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage || 'en-US');
 
     detected.filedrop = (window.FileReader && 'ondrop' in window);
 

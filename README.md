@@ -10,9 +10,8 @@ This instance of iD is customized for [OpenHistoricalMap](http://www.openhistori
 2. [Report bugs and enhancements](https://github.com/OpenHistoricalMap/iD/issues)
 3. [Contribute](CONTRIBUTING.md)
 
-### Setup
-To run the current development version, fork this project and serve it locally.
-If you have Python handy, just `cd` into the project root directory and run:
+To run the current development version, fork this project, run `make`, and serve it locally.
+If you have Python handy, just `cd` into the project root directory and run
 
      python -m http.server 8000 --bind 127.0.0.1
 
