@@ -215,7 +215,7 @@ iD.ui.Background = function(context) {
                 .placement('left'))
             .append('div')
             .attr('class', 'opacity')
-            .style('opacity', String);
+            .style('opacity', function(d) { return 1.25 - d; });
 
         var backgroundList = content.append('ul')
             .attr('class', 'layer-list');
@@ -251,6 +251,28 @@ iD.ui.Background = function(context) {
 
         var overlayList = content.append('ul')
             .attr('class', 'layer-list');
+
+        var controls = content.append('div')
+            .attr('class', 'controls-list');
+
+        var minimapLabel = controls
+            .append('label')
+            .call(bootstrap.tooltip()
+                .html(true)
+                .title(iD.ui.tooltipHtml(t('background.minimap.tooltip'), '/'))
+                .placement('top')
+            );
+
+        minimapLabel.classed('minimap-toggle', true)
+            .append('input')
+            .attr('type', 'checkbox')
+            .on('change', function() {
+                iD.ui.MapInMap.toggle();
+                d3.event.preventDefault();
+            });
+
+        minimapLabel.append('span')
+            .text(t('background.minimap.description'));
 
         var adjustments = content.append('div')
             .attr('class', 'adjustments');

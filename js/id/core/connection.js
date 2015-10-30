@@ -1,12 +1,17 @@
-iD.Connection = function() {
+iD.Connection = function(useHttps) {
+    if (typeof useHttps !== 'boolean') {
+      useHttps = window.location.protocol === 'https:';
+    }
+
     var event = d3.dispatch('authenticating', 'authenticated', 'auth', 'loading', 'loaded'),
-        url = 'http://www.openhistoricalmap.org',
+        protocol = useHttps ? 'https:' : 'http:',
+        url = protocol + '//www.openhistoricalmap.org',
         connection = {},
         inflight = {},
         loadedTiles = {},
         tileZoom = 16,
         oauth = osmAuth({
-            url: 'http://www.openhistoricalmap.org',
+            url: '://www.openhistoricalmap.org',
             oauth_consumer_key: 'KIKr52CV8tWxmYl5KpO5p5nVUVyhqSzhzToMjg78',
             oauth_secret: '7c12jCPGc1MXia0YEiqkAcUV4OUXz1vPMjRH6GyA',
             loading: authenticating,
@@ -18,7 +23,9 @@ iD.Connection = function() {
         nodeStr = 'node',
         wayStr = 'way',
         relationStr = 'relation',
+        userDetails,
         off;
+
 
     connection.changesetURL = function(changesetId) {
         return url + '/changeset/' + changesetId;
@@ -58,21 +65,23 @@ iD.Connection = function() {
             });
     };
 
-    connection.loadMultiple = function(ids, callback) {
-        // TODO: upgrade lodash and just use _.chunk
-        function chunk(arr, chunkSize) {
-            var result = [];
-            for (var i = 0; i < arr.length; i += chunkSize) {
-                result.push(arr.slice(i, i + chunkSize));
-            }
-            return result;
-        }
+    connection.loadEntityVersion = function(id, version, callback) {
+        var type = iD.Entity.id.type(id),
+            osmID = iD.Entity.id.toOSM(id);
 
-        _.each(_.groupBy(ids, iD.Entity.id.type), function(v, k) {
+        connection.loadFromURL(
+            url + '/api/0.6/' + type + '/' + osmID + '/' + version,
+            function(err, entities) {
+                if (callback) callback(err, {data: entities});
+            });
+    };
+
+    connection.loadMultiple = function(ids, callback) {
+        _.each(_.groupBy(_.uniq(ids), iD.Entity.id.type), function(v, k) {
             var type = k + 's',
                 osmIDs = _.map(v, iD.Entity.id.toOSM);
 
-            _.each(chunk(osmIDs, 150), function(arr) {
+            _.each(_.chunk(osmIDs, 150), function(arr) {
                 connection.loadFromURL(
                     url + '/api/0.6/' + type + '?' + type + '=' + arr.join(),
                     function(err, entities) {
@@ -201,7 +210,7 @@ iD.Connection = function() {
                     tag: _.map(tags, function(value, key) {
                         return { '@k': key, '@v': value };
                     }),
-                    '@version': 0.3,
+                    '@version': 0.6,
                     '@generator': 'iD'
                 }
             }
@@ -231,7 +240,7 @@ iD.Connection = function() {
 
         return {
             osmChange: {
-                '@version': 0.3,
+                '@version': 0.6,
                 '@generator': 'iD',
                 'create': nest(changes.created.map(rep), ['node', 'way', 'relation']),
                 'modify': nest(changes.modified.map(rep), ['node', 'way', 'relation']),
@@ -246,9 +255,7 @@ iD.Connection = function() {
                 created_by: 'iD ' + iD.version,
                 imagery_used: imageryUsed.join(';').substr(0, 255),
                 host: (window.location.origin + window.location.pathname).substr(0, 255),
-                locale: detected.locale,
-                browser: detected.browser + ' ' + detected.version,
-                platform: detected.platform
+                locale: detected.locale
             };
 
         if (comment) {
@@ -273,17 +280,17 @@ iD.Connection = function() {
                     content: JXON.stringify(connection.osmChangeJXON(changeset_id, changes))
                 }, function(err) {
                     if (err) return callback(err);
+                    // POST was successful, safe to call the callback.
+                    // Still attempt to close changeset, but ignore response because #2667
+                    // Add delay to allow for postgres replication #1646 #2678
+                    window.setTimeout(function() { callback(null, changeset_id); }, 2500);
                     oauth.xhr({
                         method: 'PUT',
                         path: '/api/0.6/changeset/' + changeset_id + '/close'
-                    }, function(err) {
-                        callback(err, changeset_id);
-                    });
+                    }, d3.functor(true));
                 });
             });
     };
-
-    var userDetails;
 
     connection.userDetails = function(callback) {
         if (userDetails) {
@@ -411,6 +418,7 @@ iD.Connection = function() {
     };
 
     connection.flush = function() {
+        userDetails = undefined;
         _.forEach(inflight, abortRequest);
         loadedTiles = {};
         inflight = {};
@@ -424,12 +432,14 @@ iD.Connection = function() {
     };
 
     connection.logout = function() {
+        userDetails = undefined;
         oauth.logout();
         event.auth();
         return connection;
     };
 
     connection.authenticate = function(callback) {
+        userDetails = undefined;
         function done(err, res) {
             event.auth();
             if (callback) callback(err, res);
