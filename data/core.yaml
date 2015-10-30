@@ -114,6 +114,7 @@ en:
       not_adjacent: These lines can't be merged because they aren't connected.
       restriction: These lines can't be merged because at least one is a member of a "{relation}" relation.
       incomplete_relation: These features can't be merged because at least one hasn't been fully downloaded.
+      conflicting_tags: These lines can't be merged because some of their tags have conflicting values.
     move:
       title: Move
       description: Move this to a different location.
@@ -191,7 +192,7 @@ en:
   commit:
     title: Save Changes
     description_placeholder: Brief description of your contributions
-    message_label: Commit message
+    message_label: Changeset comment
     upload_explanation: "The changes you upload will be visible on all maps that use OpenStreetMap data."
     upload_explanation_with_user: "The changes you upload as {user} will be visible on all maps that use OpenStreetMap data."
     save: Save
@@ -204,6 +205,24 @@ en:
   contributors:
     list: "Edits by {users}"
     truncated_list: "Edits by {users} and {count} others"
+  infobox:
+    selected: "{n} selected"
+    geometry: Geometry
+    closed: closed
+    center: Center
+    perimeter: Perimeter
+    length: Length
+    area: Area
+    centroid: Centroid
+    location: Location
+    metric: Metric
+    imperial: Imperial
+  geometry:
+    point: point
+    vertex: vertex
+    line: line
+    area: area
+    relation: relation
   geocoder:
     search: Search worldwide...
     no_results_visible: No results in visible map area
@@ -250,6 +269,9 @@ en:
     custom_prompt: "Enter a tile URL template. Valid tokens are {z}, {x}, {y} for Z/X/Y scheme and {u} for quadtile scheme."
     fix_misalignment: Fix alignment
     reset: reset
+    minimap:
+      description: Minimap
+      tooltip: Show a zoomed out map to help locate the area currently displayed.
   map_data:
     title: Map Data
     description: Map Data
@@ -380,6 +402,7 @@ en:
     in: Zoom In
     out: Zoom Out
   cannot_zoom: "Cannot zoom out further in current mode."
+  full_screen: Toggle Full Screen
   gpx:
     local_layer: "Local GPX file"
     drag_drop: "Drag and drop a .gpx file on the page, or click the button to the right to browse"
@@ -400,8 +423,8 @@ en:
       better for everyone.
 
       Edits that you make on this map will be visible to everyone who uses
-      OpenStreetMap. In order to make an edit, you'll need a
-      [free OpenStreetMap account](https://www.openstreetmap.org/user/new).
+      OpenStreetMap. In order to make an edit, you'll need to
+      [log in](https://www.openstreetmap.org/login).
 
       The [iD editor](http://ideditor.com/) is a collaborative project with [source
       code available on GitHub](https://github.com/openstreetmap/iD).
@@ -441,6 +464,11 @@ en:
       If you can't finish your edits in one sitting, you can leave the editor
       window and come back (on the same browser and computer), and the
       editor application will offer to restore your work.
+
+      ### Using the editor
+
+      A list of available keyboard shortcuts can be found [here](http://wiki.openstreetmap.org/wiki/ID/Shortcuts).
+
     roads: |
       # Roads
 
@@ -500,13 +528,13 @@ en:
     gps: |
       # GPS
 
-      GPS data is the most trusted source of data for OpenStreetMap. This editor
+      Collected GPS traces are one valuable source of data for OpenStreetMap. This editor
       supports local traces - `.gpx` files on your local computer. You can collect
       this kind of GPS trace with a number of smartphone applications as well as
       personal GPS hardware.
 
       For information on how to perform a GPS survey, read
-      [Surveying with a GPS](http://learnosm.org/en/beginner/using-gps/).
+      [Mapping with a smartphone, GPS, or paper](http://learnosm.org/en/mobile-mapping/).
 
       To use a GPX track for mapping, drag and drop the GPX file onto the map
       editor. If it's recognized, it will be added to the map as a bright purple
@@ -569,9 +597,8 @@ en:
       has a type assigned, the inspector will display fields with details about
       the feature like its name and address.
 
-      Below the fields you see, you can click icons to add other details,
-      like [Wikipedia](http://www.wikipedia.org/) information, wheelchair
-      access, and more.
+      Below the fields you see, you can click the 'Add field' dropdown to add
+      other details, like a Wikipedia link, wheelchair access, and more.
 
       At the bottom of the inspector, click 'Additional tags' to add arbitrary
       other tags to the element. [Taginfo](http://taginfo.openstreetmap.org/) is a

@@ -1,12 +1,11 @@
 iD.ui.Commit = function(context) {
-    var event = d3.dispatch('cancel', 'save');
+    var dispatch = d3.dispatch('cancel', 'save');
 
     function commit(selection) {
         var changes = context.history().changes(),
             summary = context.history().difference().summary();
 
         function zoomToEntity(change) {
-
             var entity = change.entity;
             if (change.changeType !== 'deleted' &&
                 context.graph().entity(entity.id).geometry(context.graph()) !== 'vertex') {
@@ -20,17 +19,12 @@ iD.ui.Commit = function(context) {
         var header = selection.append('div')
             .attr('class', 'header fillL');
 
-        header.append('button')
-            .attr('class', 'fr')
-            .on('click', event.cancel)
-            .append('span')
-            .attr('class', 'icon close');
-
         header.append('h3')
             .text(t('commit.title'));
 
         var body = selection.append('div')
             .attr('class', 'body');
+
 
         // Comment Section
         var commentSection = body.append('div')
@@ -44,15 +38,20 @@ iD.ui.Commit = function(context) {
             .attr('placeholder', t('commit.description_placeholder'))
             .attr('maxlength', 255)
             .property('value', context.storage('comment') || '')
-            .on('blur.save', function () {
+            .on('input.save', function() {
+                d3.selectAll('.save-section .save-button')
+                    .attr('disabled', (this.value.length ? null : true));
+            })
+            .on('blur.save', function() {
                 context.storage('comment', this.value);
             });
 
         commentField.node().select();
 
+
         // Warnings
         var warnings = body.selectAll('div.warning-section')
-            .data([iD.validate(changes, context.graph())])
+            .data([context.history().validate(changes)])
             .enter()
             .append('div')
             .attr('class', 'modal-section warning-section fillL2')
@@ -86,9 +85,10 @@ iD.ui.Commit = function(context) {
                 .placement('top')
             );
 
-        // Save Section
+
+        // Upload Explanation
         var saveSection = body.append('div')
-            .attr('class','modal-section fillL cf');
+            .attr('class','modal-section save-section fillL cf');
 
         var prose = saveSection.append('p')
             .attr('class', 'commit-info')
@@ -115,11 +115,19 @@ iD.ui.Commit = function(context) {
             prose.html(t('commit.upload_explanation_with_user', {user: userLink.html()}));
         });
 
-        // Confirm Button
-        var saveButton = saveSection.append('button')
-            .attr('class', 'action col6 button')
+
+        // Buttons
+        var buttonSection = saveSection.append('div')
+            .attr('class','buttons fillL cf');
+
+        var saveButton = buttonSection.append('button')
+            .attr('class', 'action col5 button save-button')
+            .attr('disabled', function() {
+                var n = d3.select('.commit-form textarea').node();
+                return (n && n.value.length) ? null : true;
+            })
             .on('click.save', function() {
-                event.save({
+                dispatch.save({
                     comment: commentField.node().value
                 });
             });
@@ -128,6 +136,16 @@ iD.ui.Commit = function(context) {
             .attr('class', 'label')
             .text(t('commit.save'));
 
+        var cancelButton = buttonSection.append('button')
+            .attr('class', 'action col5 button cancel-button')
+            .on('click.cancel', function() { dispatch.cancel(); });
+
+        cancelButton.append('span')
+            .attr('class', 'label')
+            .text(t('commit.cancel'));
+
+
+        // Changes
         var changeSection = body.selectAll('div.commit-section')
             .data([0])
             .enter()
@@ -204,5 +222,5 @@ iD.ui.Commit = function(context) {
         }
     }
 
-    return d3.rebind(commit, event, 'on');
+    return d3.rebind(commit, dispatch, 'on');
 };

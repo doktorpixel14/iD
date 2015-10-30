@@ -147,6 +147,19 @@ iD.geo.lineIntersection = function(a, b) {
     return null;
 };
 
+iD.geo.pathIntersections = function(path1, path2) {
+    var intersections = [];
+    for (var i = 0; i < path1.length - 1; i++) {
+        for (var j = 0; j < path2.length - 1; j++) {
+            var a = [ path1[i], path1[i+1] ],
+                b = [ path2[j], path2[j+1] ],
+                hit = iD.geo.lineIntersection(a, b);
+            if (hit) intersections.push(hit);
+        }
+    }
+    return intersections;
+};
+
 // Return whether point is contained in polygon.
 //
 // `point` should be a 2-item array of coordinates.
@@ -179,7 +192,7 @@ iD.geo.polygonContainsPolygon = function(outer, inner) {
     });
 };
 
-iD.geo.polygonIntersectsPolygon = function(outer, inner) {
+iD.geo.polygonIntersectsPolygon = function(outer, inner, checkSegments) {
     function testSegments(outer, inner) {
         for (var i = 0; i < outer.length - 1; i++) {
             for (var j = 0; j < inner.length - 1; j++) {
@@ -191,9 +204,13 @@ iD.geo.polygonIntersectsPolygon = function(outer, inner) {
         return false;
     }
 
-    return _.some(inner, function(point) {
-        return iD.geo.pointInPolygon(point, outer);
-    }) || testSegments(outer, inner);
+    function testPoints(outer, inner) {
+        return _.some(inner, function(point) {
+            return iD.geo.pointInPolygon(point, outer);
+        });
+    }
+
+   return testPoints(outer, inner) || (!!checkSegments && testSegments(outer, inner));
 };
 
 iD.geo.pathLength = function(path) {

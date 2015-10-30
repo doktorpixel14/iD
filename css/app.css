@@ -29,7 +29,6 @@ body {
 .id-container {
     height: 100%;
     width: 100%;
-    position: fixed;
     min-width: 768px;
 }
 
@@ -58,14 +57,12 @@ body {
 
 .spinner {
     opacity: .5;
+    float: right;
 }
 
 .spinner img {
-    position: absolute;
     height: 40px;
     width: 40px;
-    right: 10px;
-    top: 10px;
     border-radius: 4px;
     margin-right: 10px;
     background: black;
@@ -284,6 +281,11 @@ ul li { list-style: none;}
 
 .fillD {
     background:rgba(0,0,0,.5);
+    color: white;
+}
+
+.fillD2 {
+    background:rgba(0,0,0,.75);
     color: white;
 }
 
@@ -549,6 +551,9 @@ button.save.has-count .count::before {
 
 .icon.back.blue        { background-position: -420px -20px;}
 .icon.forward.blue     { background-position: -440px -20px;}
+
+.icon.full-screen              { background-position: -620px -20px;}
+.active .icon.full-screen      { background-position: -640px -20px;}
 
 button[disabled] .icon.alert      { background-position:   0 -40px;}
 button[disabled] .icon.add-point  { background-position: -20px -40px;}
@@ -1229,6 +1234,21 @@ a:hover .icon.out-link   { background-position: -500px -14px;}
     border-bottom-right-radius: 4px;
 }
 
+/* preset form cycleway */
+
+.form-field-cycleway .preset-input-wrap li {
+    border-bottom: 1px solid #CCC;
+}
+.form-field-cycleway .preset-input-wrap li:last-child {
+    border-bottom: 0;
+}
+
+.preset-input-cycleway-wrap input {
+    border-radius: 0;
+    border-width: 0;
+    border-left-width: 1px;
+}
+
 /* preset form numbers */
 
 input[type=number] {
@@ -1720,6 +1740,27 @@ img.wiki-image {
     background: rgba(0,0,0,.8);
 }
 
+/* Fullscreen button */
+div.full-screen {
+    float: right;
+    width: 40px;
+    margin-right: 10px;
+}
+
+div.full-screen .tooltip {
+    min-width: 160px;
+}
+
+div.full-screen > button, div.full-screen > button.active {
+    width: 40px;
+    height: 40px;
+    background: transparent;
+}
+
+div.full-screen > button:hover {
+    background-color: rgba(0, 0, 0, .8);
+}
+
 /* Map Controls */
 
 .map-controls {
@@ -1780,7 +1821,7 @@ img.wiki-image {
     padding-bottom: 10px;
 }
 
-.layer-list {
+.layer-list, .controls-list {
     margin-bottom: 10px;
     border: 1px solid #CCC;
     border-radius: 4px;
@@ -1828,6 +1869,22 @@ img.wiki-image {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.minimap-toggle {
+    display: block;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #7092FF;
+    border-radius: 3px;
+}
+
+.minimap-toggle.active {
+    background: #E8EBFF;
+}
+
+.minimap-toggle:hover {
+    background-color: #ececec;
 }
 
 .hide-toggle {
@@ -2131,11 +2188,22 @@ img.wiki-image {
     user-select: none;
 }
 
-.map-in-map-svg {
-    position: relative;
+.map-in-map-svg,
+.map-in-map-gpx {
+    top: 0;
+    left: 0;
     overflow: hidden;
     height: 100%;
     width: 100%;
+}
+
+.map-in-map-svg {
+    position: absolute;
+}
+
+.map-in-map-gpx {
+    position: relative;
+    z-index: 10;
 }
 
 .map-in-map-bbox {
@@ -2149,6 +2217,39 @@ img.wiki-image {
     stroke-width: 5;
 }
 
+/* Info Box
+------------------------------------------------------- */
+.infobox {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    bottom: 30px;
+    width: 240px;
+    border-radius: 4px 0 0 0;
+    border-bottom: 1px solid black;
+}
+
+.infobox .selection-heading {
+    display: block;
+    border-radius: 4px 0 0 0;
+    padding: 5px 10px;
+    height: 30px;
+}
+
+.infobox ul {
+    padding: 5px 10px;
+}
+
+.infobox .button {
+    position: absolute;
+    background: #7092ff;
+    border-radius: 2px;
+    padding: 0 4px;
+    color: white;
+    top: 40px;
+    right: 10px;
+}
+
 /* About Section
 ------------------------------------------------------- */
 
@@ -2158,6 +2259,7 @@ img.wiki-image {
     right:0;
     bottom:0;
     border-radius: 0;
+    pointer-events: none;
 }
 
 #attrib {
@@ -2166,7 +2268,6 @@ img.wiki-image {
     margin-bottom: 5px;
     float: left;
     clear: both;
-    pointer-events: none;
 }
 
 #attrib * { pointer-events: all; }
@@ -2199,6 +2300,7 @@ img.wiki-image {
     width: 100%;
     float: left;
     clear: both;
+    pointer-events: all;
 }
 
 #scale-block {
@@ -2343,6 +2445,13 @@ img.wiki-image {
 .modal-section.buttons .action {
     display: inline-block;
     margin: 0 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.save-section .buttons .action {
+    display: inline-block;
+    margin: 0 20px 0 0;
     text-align: center;
     vertical-align: middle;
 }

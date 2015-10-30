@@ -8,7 +8,7 @@ iD.ui.Background = function(context) {
             ['bottom', [0, 1]]],
         opacityDefault = (context.storage('background-opacity') !== null) ?
             (+context.storage('background-opacity')) : 0.5,
-        customTemplate = '';
+        customTemplate = context.storage('background-custom-template') || '';
 
     // Can be 0 from <1.3.0 use or due to issue #1923.
     if (opacityDefault === 0) opacityDefault = 0.5;
@@ -64,6 +64,7 @@ iD.ui.Background = function(context) {
         function setCustom(template) {
             context.background().baseLayerSource(iD.BackgroundSource.Custom(template));
             selectLayer();
+            context.storage('background-custom-template', template);
         }
 
         function clickSetOverlay(d) {
@@ -214,7 +215,7 @@ iD.ui.Background = function(context) {
                 .placement('left'))
             .append('div')
             .attr('class', 'opacity')
-            .style('opacity', String);
+            .style('opacity', function(d) { return 1.25 - d; });
 
         var backgroundList = content.append('ul')
             .attr('class', 'layer-list');
@@ -250,6 +251,28 @@ iD.ui.Background = function(context) {
 
         var overlayList = content.append('ul')
             .attr('class', 'layer-list');
+
+        var controls = content.append('div')
+            .attr('class', 'controls-list');
+
+        var minimapLabel = controls
+            .append('label')
+            .call(bootstrap.tooltip()
+                .html(true)
+                .title(iD.ui.tooltipHtml(t('background.minimap.tooltip'), '/'))
+                .placement('top')
+            );
+
+        minimapLabel.classed('minimap-toggle', true)
+            .append('input')
+            .attr('type', 'checkbox')
+            .on('change', function() {
+                iD.ui.MapInMap.toggle();
+                d3.event.preventDefault();
+            });
+
+        minimapLabel.append('span')
+            .text(t('background.minimap.description'));
 
         var adjustments = content.append('div')
             .attr('class', 'adjustments');
